@@ -1,5 +1,5 @@
 import sublime, sublime_plugin, re
-import time
+import time, datetime
 import threading
 from math import ceil as ceil
 from os.path import basename
@@ -145,10 +145,6 @@ class WordCount(sublime_plugin.EventListener):
 			Pref.view = sublime.active_window().active_view()
 
 	def display(self, view, on_selection, word_count, char_count, word_count_line, char_count_line):
-
-		m = int(word_count / Pref.readtime_wpm)
-		s = int(word_count % Pref.readtime_wpm / (Pref.readtime_wpm / 60))
-
 		status = []
 
 		if word_count:
@@ -188,7 +184,10 @@ class WordCount(sublime_plugin.EventListener):
 					status.append('Page '+str(current_page)+'/'+str(pages))
 
 		if Pref.enable_readtime and s >= 1:
-			status.append("~%dm %ds reading time" % (m, s))
+			mins = int(word_count / Pref.readtime_wpm)
+			secs = int(word_count % Pref.readtime_wpm / (Pref.readtime_wpm / 60))
+			est_txt = str(datetime.timedelta(minutes=mins, seconds=secs))
+			status.append("≈ %s reading time" % est_txt)
 
 		view.set_status('WordCount', ', '.join(status))
 
