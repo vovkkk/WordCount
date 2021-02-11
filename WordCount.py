@@ -183,11 +183,12 @@ class WordCount(sublime_plugin.EventListener):
 				else:
 					status.append('Page '+str(current_page)+'/'+str(pages))
 
-		if Pref.enable_readtime and s >= 1:
+		if Pref.enable_readtime:
 			mins = int(word_count / Pref.readtime_wpm)
 			secs = int(word_count % Pref.readtime_wpm / (Pref.readtime_wpm / 60))
 			est_txt = str(datetime.timedelta(minutes=mins, seconds=secs))
-			status.append("≈ %s reading time" % est_txt)
+			status.append("≈ %s reading time" % est_txt if mins or secs else '')
+			print(status)
 
 		view.set_status('WordCount', ', '.join(status))
 
