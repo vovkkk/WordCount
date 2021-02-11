@@ -188,7 +188,6 @@ class WordCount(sublime_plugin.EventListener):
 			secs = int(word_count % Pref.readtime_wpm / (Pref.readtime_wpm / 60))
 			est_txt = str(datetime.timedelta(minutes=mins, seconds=secs))
 			status.append("≈ %s reading time" % est_txt if mins or secs else '')
-			print(status)
 
 		view.set_status('WordCount', ', '.join(status))
 
